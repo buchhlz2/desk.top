@@ -24,7 +24,7 @@ app.use(helmet({
             'cdnjs.cloudflare.com',
             'stackpath.bootstrapcdn.com'
         ],
-        fontSrc: ['stackpath.bootstrapcdn.com']
+        fontSrc: ['netdna.bootstrapcdn.com']
       }
     }
   }))

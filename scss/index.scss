@@ -2,12 +2,29 @@
 
 body {
     background-color: $primary-color;
+    font-family: 'Open Sans', sans-serif;
 }
 
 h1 {
     color: $accent-color-light;
 }
 
-div {
+.folder-container {
     border: 1px solid $accent-color-light;
+    height: 5em;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.folder {
+    background-image: url('../media/folder.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 2em;
+    width: 50%;
+    margin: 0 auto;
 }
