@@ -1,0 +1,13 @@
+@import '_colors';
+
+body {
+    background-color: $primary-color;
+}
+
+h1 {
+    color: $accent-color-light;
+}
+
+div {
+    border: 1px solid $accent-color-light;
+}
