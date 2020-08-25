@@ -10,4 +10,30 @@ $(document).ready(function(){
         }
     }
     addFolderDesktop();
+    $("#drop-area").droppable({
+        drop: function( event, ui ) {
+        $( this )
+            .addClass("highlight");
+            }
+      });
+    $(".folder").draggable({
+        scroll: true,
+        scrollSensitivity: 10,
+        containment: "#full-area",
+        cursor: "move",
+        //revert: true,
+        /*
+        start: function( event, ui ) { 
+            console.log(event);
+            console.log(ui);
+        },  
+        drag: function( event, ui ) {  
+            console.log(event);
+            console.log(ui);
+        },
+        stop: function( event, ui ) {
+            console.log(event);
+            console.log(ui);
+        }*/
+    });
 });
