@@ -17,12 +17,7 @@ h1 {
   text-align: center;
 }
 
-.folder {
-  background-image: url("../media/folder.png");
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  height: 2em;
+.folder-div {
   width: 50%;
   margin: 0 auto;
 }

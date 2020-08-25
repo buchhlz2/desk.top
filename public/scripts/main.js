@@ -1,5 +1,10 @@
-$(document).ready(function(){
-    let $folderArea = (row, index) => $(`<div class="col-lg text-center folder-container"><div class="folder" id="folder-${row}${index}"></div></div>`);
+$(function() {
+    document.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        console.log(e);
+    })
+
+    let $folderArea = (row, index) => $(`<div class="col-lg text-center folder-container"><div class="folder-div" id="folder-${row}${index}" data-id="folder-${row}${index}"><i class="fas fa-folder fa-2x"></i></div></div>`);
 
     function addFolderDesktop(i, j) {
         for(let i = 0; i < 8; i++) {
@@ -16,7 +21,7 @@ $(document).ready(function(){
             .addClass("highlight");
             }
       });
-    $(".folder").draggable({
+    $(".folder-div").draggable({
         scroll: true,
         scrollSensitivity: 10,
         containment: "#full-area",

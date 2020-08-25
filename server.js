@@ -16,15 +16,19 @@ app.use(helmet({
         defaultSrc: ["'self'"],
         styleSrc: [
             "'self'",
-            'stackpath.bootstrapcdn.com'
+            'stackpath.bootstrapcdn.com',
+            'kit-free.fontawesome.com'
         ],
         scriptSrc: [
             "'self'",
             'code.jquery.com',
             'cdnjs.cloudflare.com',
-            'stackpath.bootstrapcdn.com'
+            'stackpath.bootstrapcdn.com',
+            'kit.fontawesome.com'
         ],
-        fontSrc: ['netdna.bootstrapcdn.com']
+        fontSrc: [
+          'kit-free.fontawesome.com'
+        ]
       }
     }
   }))
