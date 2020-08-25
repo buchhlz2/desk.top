@@ -46,6 +46,7 @@ $(function() {
     
     // variables
     const selectAllFolders = $(".folder-div");
+    const folderClassName = 'folder-div';
     const menu = $("#context-menu");
     let menuState = 0;
     let activeMenu = "context-menu--active";
@@ -62,10 +63,35 @@ $(function() {
 
     // Helper Functions
 
-    // listens for contextmenu events -- need to refactor the "contextMenuListener" fucntion & for loop into this helper
+    // listens for contextmenu events -- toggles menu on/off if the correct class (folder-div) is clicked on
     function contextListener() {
-
+        document.addEventListener("contextmenu", function(e) {
+            if(clickInsideElement(e, folderClassName)) {
+              e.preventDefault();
+              toggleMenuOn();
+              positionMenu(e);
+            } else {
+                toggleMenuOff();
+              }
+          });
     }
+
+    // only apply context menu if clicked inside of "className", e.g., "folder-div"
+    function clickInsideElement(e, className) {
+        let el = e.srcElement || e.target;
+        console.log(el)
+        if (el.classList.contains(className)) {
+          return el;
+        } else {
+          while (el = el.parentNode) {
+            if (el.classList && el.classList.contains(className)) {
+              return el;
+            }
+          }
+        }
+      
+        return false;
+      }
 
     // listens for click events; toggles menu off if a left click
     function clickListener() {
@@ -112,17 +138,13 @@ $(function() {
     // change the position of the context menu
     function positionMenu(e) {
         menuPosition = getPosition(e);
+        console.log(menu)
         menuPositionX = menuPosition.x + "px";
         menuPositionY = menuPosition.y + "px";
 
-        menu.style.left = menuPositionX;
-        menu.style.top = menuPositionY;
+        menu[0].style.left = menuPositionX;
+        menu[0].style.top = menuPositionY;
     }
-    
-    // listen for events on contextmenu (right click) -- must refactor into "contextListener"
-    document.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-    });
 
     // Main Functions
 
@@ -140,20 +162,6 @@ $(function() {
             menuState = 0;
             menu.removeClass(activeMenu);
         }
-    }
-
-    function contextMenuListener(el) {
-        el.addEventListener("contextmenu", function(e) {
-            console.log(e, el);
-            toggleMenuOn();
-            positionMenu(e);
-        });
-    }
-
-    // add listener to only the areas that need it, e.g., the folders
-    for (let i = 0; i < selectAllFolders.length; i++ ) {
-        let selectFolder = selectAllFolders[i];
-        contextMenuListener(selectFolder);
     }
 
     init();
