@@ -45,20 +45,36 @@ $(function() {
     // add listener to each of the folder divs, define if menu state is active/not, and position custom menu
     
     // variables
-    const selectAllFolders = $(".folder-div");
+    const contextMenuClassName = "context-menu";
+    const contextMenuActionClassName = "context-menu__item";
+    const contextMenuLinkClassName = "context-menu__link";
+    const contextMenuActive = "context-menu--active";
+
     const folderClassName = 'folder-div';
+    let folderActionInContext;
+
+    let clickCoords;
+    let clickCoordsX;
+    let clickCoordsY;
+    
     const menu = $("#context-menu");
+    const menuItems = menu.find(".context-menu__item");
     let menuState = 0;
-    let activeMenu = "context-menu--active";
-    let menuPosition;
+    let menuWidth;
+    let menuHeight;
     let menuPositionX;
     let menuPositionY;
+
+    let windowWidth;
+    let windowHeight;
+
 
     // initialize our application's code.
     function init() {
         contextListener();
         clickListener();
         keyupListener();
+        resizeListener();
     }
 
     // Helper Functions
@@ -66,13 +82,15 @@ $(function() {
     // listens for contextmenu events -- toggles menu on/off if the correct class (folder-div) is clicked on
     function contextListener() {
         document.addEventListener("contextmenu", function(e) {
-            if(clickInsideElement(e, folderClassName)) {
-              e.preventDefault();
+            e.preventDefault();
+            folderActionInContext = clickInsideElement(e, folderClassName);
+            if(folderActionInContext) {
               toggleMenuOn();
               positionMenu(e);
             } else {
+                folderActionInContext = null;
                 toggleMenuOff();
-              }
+            }
           });
     }
 
@@ -96,11 +114,16 @@ $(function() {
     // listens for click events; toggles menu off if a left click
     function clickListener() {
         document.addEventListener("click", function(e) {
-          let button = e.which || e.button;
-          console.log(button)
-          if (button === 1) {
-            toggleMenuOff();
-          }
+            let clickeElIsLink = clickInsideElement(e, contextMenuLinkClassName);
+            if (clickeElIsLink) {
+                e.preventDefault();
+                menuItemListener(clickeElIsLink);
+            } else {
+                let button = e.which || e.button;
+                    if (button === 1) {
+                        toggleMenuOff();
+                    }
+            }
         });
     }
 
@@ -110,6 +133,38 @@ $(function() {
           if ( e.keyCode === 27 ) {
             toggleMenuOff();
           }
+        }
+    }
+
+    // listen for a winoow resize to make sure context menu turns off (to avoid confusing layout)
+    function resizeListener() {
+        window.onresize = function(e) {
+            toggleMenuOff();
+        };
+    }
+
+    function menuItemListener(link) {
+        console.log("Folder ID - " + folderActionInContext.getAttribute("data-id") + ", Folder action - " + link.getAttribute("data-action"));
+        toggleMenuOff();
+    }
+
+
+
+    // Main Functions
+
+    // toggle menu state/class when active
+    function toggleMenuOn() {
+        if(menuState !== 1) {
+            menuState = 1;
+            menu.addClass(contextMenuActive);
+        }
+    }
+
+    // toggle menu off if a normal click or 'esc'
+    function toggleMenuOff() {
+        if(menuState !== 0) {
+            menuState = 0;
+            menu.removeClass(contextMenuActive);
         }
     }
 
@@ -137,32 +192,29 @@ $(function() {
     }
     // change the position of the context menu
     function positionMenu(e) {
-        menuPosition = getPosition(e);
-        console.log(menu)
-        menuPositionX = menuPosition.x + "px";
-        menuPositionY = menuPosition.y + "px";
+        clickCoords = getPosition(e);
+        clickCoordsX = clickCoords.x;
+        clickCoordsY = clickCoords.y;
 
-        menu[0].style.left = menuPositionX;
-        menu[0].style.top = menuPositionY;
-    }
+        menuWidth = menu.offsetWidth + 4;
+        menuHeight = menu.offsetHeight + 4;
 
-    // Main Functions
+        windowWidth = window.innerWidth;
+        windowHeight = window.innerHeight;
 
-    // toggle menu state/class when active
-    function toggleMenuOn() {
-        if(menuState !== 1) {
-            menuState = 1;
-            menu.addClass(activeMenu);
+        if ((windowWidth - clickCoordsX) < menuWidth) {
+            menu[0].style.left = windowWidth - menuWidth + "px";
+        } else {
+            menu[0].style.left = clickCoordsX + "px";
+        }
+
+        if ((windowHeight - clickCoordsY) < menuHeight) {
+            menu[0].style.top = windowHeight - menuHeight + "px";
+        } else {
+            menu[0].style.top = clickCoordsY + "px";
         }
     }
 
-    // toggle menu off if a normal click or 'esc'
-    function toggleMenuOff() {
-        if(menuState !== 0) {
-            menuState = 0;
-            menu.removeClass(activeMenu);
-        }
-    }
 
     init();
 });
