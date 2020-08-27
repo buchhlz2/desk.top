@@ -45,12 +45,13 @@ $(function() {
     // add listener to each of the folder divs, define if menu state is active/not, and position custom menu
     
     // variables
-    const contextMenuClassName = "context-menu";
-    const contextMenuActionClassName = "context-menu__item";
     const contextMenuLinkClassName = "context-menu__link";
     const contextMenuActive = "context-menu--active";
+    let contextMenuAction;
 
     const folderClassName = 'folder-div';
+    const folderEditAddClassName = 'folder-edit';
+    let folderInContext;
     let folderActionInContext;
 
     let clickCoords;
@@ -58,12 +59,11 @@ $(function() {
     let clickCoordsY;
     
     const menu = $("#context-menu");
-    const menuItems = menu.find(".context-menu__item");
-    let menuState = 0;
+    let menuState = {
+        enabled: 0
+    };
     let menuWidth;
     let menuHeight;
-    let menuPositionX;
-    let menuPositionY;
 
     let windowWidth;
     let windowHeight;
@@ -130,7 +130,7 @@ $(function() {
     // listens for keyup event of 'esc'; if so, toggles menu off
     function keyupListener() {
         window.onkeyup = function(e) {
-          if ( e.keyCode === 27 ) {
+          if (e.keyCode === 27) {
             toggleMenuOff();
           }
         }
@@ -145,6 +145,11 @@ $(function() {
 
     function menuItemListener(link) {
         console.log("Folder ID - " + folderActionInContext.getAttribute("data-id") + ", Folder action - " + link.getAttribute("data-action"));
+        let folder = folderActionInContext.getAttribute("data-id");
+        contextMenuAction = link.getAttribute("data-action");
+        if(contextMenuAction == "EDIT") {
+            editExistingFolder(folder);
+        }
         toggleMenuOff();
     }
 
@@ -154,16 +159,16 @@ $(function() {
 
     // toggle menu state/class when active
     function toggleMenuOn() {
-        if(menuState !== 1) {
-            menuState = 1;
+        if(menuState.enabled !== 1) {
+            menuState.enabled = 1;
             menu.addClass(contextMenuActive);
         }
     }
 
     // toggle menu off if a normal click or 'esc'
     function toggleMenuOff() {
-        if(menuState !== 0) {
-            menuState = 0;
+        if(menuState.enabled !== 0) {
+            menuState.enabled = 0;
             menu.removeClass(contextMenuActive);
         }
     }
@@ -213,6 +218,13 @@ $(function() {
         } else {
             menu[0].style.top = clickCoordsY + "px";
         }
+    }
+
+
+    // Folder Interactions through Context Menu
+    function editExistingFolder(folderDataId) {
+        folderInContext = $(`[data-id="${folderDataId}"]`);
+        folderInContext.addClass(folderEditAddClassName);
     }
 
 
