@@ -1,13 +1,25 @@
 $(function() {
     // Folder & Desktop Setup
     // bootstrap grid where each grid can have 0 to 1 folders; current logic hardcodes all divs to have folder
-    let $folderArea = (row, index) => $(`<div class="col-lg text-center folder-container"><div class="folder-div" id="folder-${row}${index}" data-id="folder-${row}${index}"><i class="fas fa-folder fa-2x"></i></div></div>`);
+    let $folderGrid = (row, index) => $(
+        `<div class="col-lg text-center folder-container" id="folder-container_${row}${index}" props="${row}${index}">
+        </div>`
+    );
+
+    /*
+        `<div class="folder-div" data-id="folder-${row}${index}">
+            <i class="fas fa-folder fa-2x">
+            </i>
+        </div>`
+    */
 
     function addFolderToDesktop(i, j) {
         for(let i = 0; i < 8; i++) {
-            $('#desktop').append(`<div class="row text-center" id="desktop-row-${i}"></div>`)
+            $('#desktop').append(
+                `<div class="row text-center" id="desktop-row_${i}"></div>`
+            );
             for(let j = 0; j < 10; j++) {
-                $(`#desktop-row-${i}`).append($folderArea(i,j).clone());
+                $(`#desktop-row_${i}`).append($folderGrid(i,j).clone());
             }
         }
     }
@@ -19,26 +31,28 @@ $(function() {
             $(this).addClass("highlight");
         }
       });
-    $(".folder-div").draggable({
-        scroll: true,
-        scrollSensitivity: 10,
-        containment: "#full-area",
-        cursor: "move",
-        //revert: true,
-        /*
-        start: function( event, ui ) { 
-            console.log(event);
-            console.log(ui);
-        },  
-        drag: function( event, ui ) {  
-            console.log(event);
-            console.log(ui);
-        },
-        stop: function( event, ui ) {
-            console.log(event);
-            console.log(ui);
-        }*/
-    });
+    function makeDragable(el) {
+        el.draggable({
+            scroll: true,
+            scrollSensitivity: 10,
+            containment: "#full-area",
+            cursor: "move",
+            //revert: true,
+            /*
+            start: function( event, ui ) { 
+                console.log(event);
+                console.log(ui);
+            },  
+            drag: function( event, ui ) {  
+                console.log(event);
+                console.log(ui);
+            },
+            stop: function( event, ui ) {
+                console.log(event);
+                console.log(ui);
+            }*/
+        });
+    }
 
     // Context Menu
     // build custom context menu
@@ -50,6 +64,7 @@ $(function() {
     let contextMenuAction;
 
     const folderClassName = 'folder-div';
+    const folderContainerClassName = 'folder-container';
     const folderEditAddClassName = 'folder-edit';
     let folderInContext;
     let folderActionInContext;
@@ -83,7 +98,7 @@ $(function() {
     function contextListener() {
         document.addEventListener("contextmenu", function(e) {
             e.preventDefault();
-            folderActionInContext = clickInsideElement(e, folderClassName);
+            folderActionInContext = clickInsideElement(e, folderContainerClassName);
             if(folderActionInContext) {
               toggleMenuOn();
               positionMenu(e);
@@ -97,7 +112,6 @@ $(function() {
     // only apply context menu if clicked inside of "className", e.g., "folder-div"
     function clickInsideElement(e, className) {
         let el = e.srcElement || e.target;
-        console.log(el)
         if (el.classList.contains(className)) {
           return el;
         } else {
@@ -144,11 +158,28 @@ $(function() {
     }
 
     function menuItemListener(link) {
-        console.log("Folder ID - " + folderActionInContext.getAttribute("data-id") + ", Folder action - " + link.getAttribute("data-action"));
-        let folder = folderActionInContext.getAttribute("data-id");
         contextMenuAction = link.getAttribute("data-action");
-        if(contextMenuAction == "EDIT") {
-            editExistingFolder(folder);
+
+        let folderDataId;
+        let folderContainerId = folderActionInContext.getAttribute("id");
+        
+        switch(contextMenuAction) {
+            case("CREATE"):
+                console.log("Folder ID - " + folderDataId + ", Folder Container ID - " + folderContainerId + ", Folder action - " + contextMenuAction);
+                createNewFolder(folderContainerId);
+                break;
+            case("EDIT"):
+                folderDataId = "folder_" + $(`[id="${folderContainerId}"]`)[0].getAttribute("props");
+                console.log("Folder ID - " + folderDataId + ", Folder Container ID - " + folderContainerId + ", Folder action - " + contextMenuAction);
+                editExistingFolder(folderDataId);
+                break;
+            case("DELETE"):
+                folderDataId = "folder_" + $(`[id="${folderContainerId}"]`)[0].getAttribute("props");
+                console.log("Folder ID - " + folderDataId + ", Folder Container ID - " + folderContainerId + ", Folder action - " + contextMenuAction);
+                deleteExistingFolder(folderDataId);
+                break;
+            default:
+                toggleMenuOff();
         }
         toggleMenuOff();
     }
@@ -222,11 +253,31 @@ $(function() {
 
 
     // Folder Interactions through Context Menu
+
+    function createNewFolder(folderContainerId) {
+        let folderContainer = $(`[id="${folderContainerId}"]`);
+        let folderDataId = folderContainer[0].getAttribute("props");
+
+        if(folderDataId) {
+            $(`#${folderContainerId}`).append(
+                `<div class="folder-div" id="folder_${folderDataId}" data-id="folder_${folderDataId}">
+                    <i class="fas fa-folder fa-2x">
+                </div>`
+            );
+        };
+
+        makeDragable($(`#folder_${folderDataId}`));
+    }
+
     function editExistingFolder(folderDataId) {
         folderInContext = $(`[data-id="${folderDataId}"]`);
         folderInContext.addClass(folderEditAddClassName);
     }
 
+    function deleteExistingFolder(folderDataId) {
+        folderInContext = $(`[data-id="${folderDataId}"]`);
+        folderInContext.remove();
+    }
 
     init();
 });

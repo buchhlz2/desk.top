@@ -1,11 +1,9 @@
 body {
   background-color: #455A64;
-  font-family: "Open Sans", sans-serif;
-}
+  font-family: 'Open Sans', sans-serif; }
 
 h1 {
-  color: #FFFFFF;
-}
+  color: #FFFFFF; }
 
 .folder-container {
   border: 1px solid #FFFFFF;
@@ -14,23 +12,19 @@ h1 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  text-align: center;
-}
+  text-align: center; }
 
 .folder-div {
   width: 50%;
   margin: 0 auto;
-  z-index: 1;
-}
+  z-index: 1; }
 
 #drop-area {
-  width: 100%;
-}
+  width: 100%; }
 
 .highlight {
   background-color: #CFD8DC;
-  z-index: -1;
-}
+  z-index: -1; }
 
 .context-menu {
   display: none;
@@ -40,42 +34,32 @@ h1 {
   width: 240px;
   background-color: #fff;
   border: solid 1px #dfdfdf;
-  box-shadow: 1px 1px 2px #cfcfcf;
-}
+  box-shadow: 1px 1px 2px #cfcfcf; }
 
 .context-menu--active {
-  display: block;
-}
+  display: block; }
 
 .context-menu__items {
   list-style: none;
   margin: 0;
-  padding: 0;
-}
+  padding: 0; }
 
 .context-menu__item {
   display: block;
-  margin-bottom: 4px;
-}
+  margin-bottom: 4px; }
 
 .context-menu__item:last-child {
-  margin-bottom: 0;
-}
+  margin-bottom: 0; }
 
 .context-menu__link {
   display: block;
   padding: 4px 12px;
   color: #0066aa;
-  text-decoration: none;
-}
+  text-decoration: none; }
 
 .context-menu__link:hover {
   color: #fff;
-  background-color: #0066aa;
-}
+  background-color: #0066aa; }
 
 .folder-edit {
-  color: yellow;
-}
-
-/*# sourceMappingURL=style.css.map */
+  color: yellow; }
