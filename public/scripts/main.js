@@ -6,52 +6,36 @@ $(function() {
         </div>`
     );
 
-    /*
-        `<div class="folder-div" data-id="folder-${row}${index}">
-            <i class="fas fa-folder fa-2x">
-            </i>
-        </div>`
-    */
+    // define drag/drop divs & areas using JQuery UI
+    function makeDroppable(el) {
+        el.droppable({
+            drop: function(event, ui) {
+                $(this).addClass("highlight");
+            }
+        });
+    }
 
-    function addFolderToDesktop(i, j) {
+    function makeDragable(el) {
+        el.draggable({
+            scroll: true,
+            scrollSensitivity: 10,
+            containment: "#full-area",
+            cursor: "move"
+        });
+    }
+
+    addFolderGridToDesktop();
+    makeDroppable($("#drop-area"));
+
+    function addFolderGridToDesktop(i, j) {
         for(let i = 0; i < 8; i++) {
             $('#desktop').append(
                 `<div class="row text-center" id="desktop-row_${i}"></div>`
             );
             for(let j = 0; j < 10; j++) {
                 $(`#desktop-row_${i}`).append($folderGrid(i,j).clone());
-            }
+            };
         }
-    }
-    addFolderToDesktop();
-
-    // define drag/drop divs & areas using JQuery UI
-    $("#drop-area").droppable({
-        drop: function( event, ui ) {
-            $(this).addClass("highlight");
-        }
-      });
-    function makeDragable(el) {
-        el.draggable({
-            scroll: true,
-            scrollSensitivity: 10,
-            containment: "#full-area",
-            cursor: "move",
-            //revert: true,
-            /*
-            start: function( event, ui ) { 
-                console.log(event);
-                console.log(ui);
-            },  
-            drag: function( event, ui ) {  
-                console.log(event);
-                console.log(ui);
-            },
-            stop: function( event, ui ) {
-                console.log(event);
-                console.log(ui);
-            }*/
-        });
     }
 
     // Context Menu
@@ -66,6 +50,7 @@ $(function() {
     const folderClassName = 'folder-div';
     const folderContainerClassName = 'folder-container';
     const folderEditAddClassName = 'folder-edit';
+    const folderOpenAddClassName = 'folder-open';
     let folderInContext;
     let folderActionInContext;
 
@@ -113,13 +98,13 @@ $(function() {
     function clickInsideElement(e, className) {
         let el = e.srcElement || e.target;
         if (el.classList.contains(className)) {
-          return el;
+            return el;
         } else {
-          while (el = el.parentNode) {
-            if (el.classList && el.classList.contains(className)) {
-              return el;
+            while (el = el.parentNode) {
+                if (el.classList && el.classList.contains(className)) {
+                    return el;
+                }
             }
-          }
         }
       
         return false;
@@ -128,6 +113,8 @@ $(function() {
     // listens for click events; toggles menu off if a left click
     function clickListener() {
         document.addEventListener("click", function(e) {
+            console.log(e.target)
+            $(e.target).focus();
             let clickeElIsLink = clickInsideElement(e, contextMenuLinkClassName);
             if (clickeElIsLink) {
                 e.preventDefault();
@@ -157,25 +144,28 @@ $(function() {
         };
     }
 
+    function checkFolderId(parentId) {
+        return "folder_" + $(`[id="${parentId}"]`)[0].getAttribute("props");
+    }
+
     function menuItemListener(link) {
         contextMenuAction = link.getAttribute("data-action");
-
-        let folderDataId;
+        
         let folderContainerId = folderActionInContext.getAttribute("id");
+        let folderDataId = checkFolderId(folderContainerId);
+        console.log("Folder ID - " + folderDataId + ", Folder Container ID - " + folderContainerId + ", Folder action - " + contextMenuAction);
         
         switch(contextMenuAction) {
             case("CREATE"):
-                console.log("Folder ID - " + folderDataId + ", Folder Container ID - " + folderContainerId + ", Folder action - " + contextMenuAction);
                 createNewFolder(folderContainerId);
                 break;
+            case("OPEN"):
+                openExistingFolder(folderDataId);
+                break;
             case("EDIT"):
-                folderDataId = "folder_" + $(`[id="${folderContainerId}"]`)[0].getAttribute("props");
-                console.log("Folder ID - " + folderDataId + ", Folder Container ID - " + folderContainerId + ", Folder action - " + contextMenuAction);
                 editExistingFolder(folderDataId);
                 break;
             case("DELETE"):
-                folderDataId = "folder_" + $(`[id="${folderContainerId}"]`)[0].getAttribute("props");
-                console.log("Folder ID - " + folderDataId + ", Folder Container ID - " + folderContainerId + ", Folder action - " + contextMenuAction);
                 deleteExistingFolder(folderDataId);
                 break;
             default:
@@ -261,12 +251,17 @@ $(function() {
         if(folderDataId) {
             $(`#${folderContainerId}`).append(
                 `<div class="folder-div" id="folder_${folderDataId}" data-id="folder_${folderDataId}">
-                    <i class="fas fa-folder fa-2x">
+                <a href="#"><span class="fas fa-folder fa-3x folder-icon"></span></a>
                 </div>`
             );
         };
 
         makeDragable($(`#folder_${folderDataId}`));
+    }
+
+    function openExistingFolder(folderDataId) {
+        folderInContext = $(`[data-id="${folderDataId}"]`);
+        folderInContext.addClass(folderOpenAddClassName);
     }
 
     function editExistingFolder(folderDataId) {
