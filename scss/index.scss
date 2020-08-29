@@ -12,16 +12,11 @@ body {
                         supported by Chrome, Edge, Opera and Firefox */
 }
 
-.test-class {
-  color: $test-class !important;
-}
-
 h1 {
     color: $accent-color-light;
 }
 
 .folder-container {
-    border: 1px solid $accent-color-light;
     height: 5em;
     width: 100%;
     text-align: center;
@@ -135,4 +130,18 @@ h1 {
 
   .dock-app-label--hover {
     display: block;
+  }
+
+  @keyframes expand {
+    100% {
+      transform: scale(1.2);
+      color: black;
+    }
+  }
+  
+  .dock-app-icon--hover {
+    animation-name: expand;
+    animation-duration: .1s; // or in "ms"
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
   }

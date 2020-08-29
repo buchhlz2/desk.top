@@ -17,7 +17,7 @@ app.use(helmet({
         styleSrc: [
             "'self'",
             'stackpath.bootstrapcdn.com',
-            'kit-free.fontawesome.com'
+            'kit-free.fontawesome.com',
         ],
         scriptSrc: [
             "'self'",
@@ -28,7 +28,8 @@ app.use(helmet({
         ],
         fontSrc: [
           'kit-free.fontawesome.com'
-        ]
+        ],
+        imgSrc: ['lh3.googleusercontent.com']
       }
     }
   }))

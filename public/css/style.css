@@ -15,14 +15,10 @@ body {
   /* Non-prefixed version, currently
                         supported by Chrome, Edge, Opera and Firefox */ }
 
-.test-class {
-  color: yellow !important; }
-
 h1 {
   color: #FFFFFF; }
 
 .folder-container {
-  border: 1px solid #FFFFFF;
   height: 5em;
   width: 100%;
   text-align: center;
@@ -118,3 +114,14 @@ h1 {
 
 .dock-app-label--hover {
   display: block; }
+
+@keyframes expand {
+  100% {
+    transform: scale(1.2);
+    color: black; } }
+
+.dock-app-icon--hover {
+  animation-name: expand;
+  animation-duration: .1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear; }

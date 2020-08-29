@@ -11,13 +11,13 @@ $(function() {
         $('.dock-app-icon').mouseenter(function() {
             let dockAppLabelId = $(this)[0].parentNode.children[0].getAttribute('id');
             let dockAppId = $(this)[0].getAttribute('id');
-            $(`#${dockAppId}`).addClass("test-class");
+            $(`#${dockAppId}`).addClass("dock-app-icon--hover");
             $(`#${dockAppLabelId}`).addClass('dock-app-label--hover');
           })
           .mouseleave(function() {
             let dockAppLabelId = $(this)[0].parentNode.children[0].getAttribute('id');
             let dockAppId = $(this)[0].getAttribute('id');
-            $(`#${dockAppId}`).removeClass("test-class");
+            $(`#${dockAppId}`).removeClass("dock-app-icon--hover");
             $(`#${dockAppLabelId}`).removeClass('dock-app-label--hover');
           });
     }
@@ -37,6 +37,7 @@ $(function() {
         el.draggable({
             scroll: true,
             scrollSensitivity: 10,
+            containment: 'window',
             cursor: "move",
             revert: 'invalid'
         });
