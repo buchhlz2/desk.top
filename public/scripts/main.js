@@ -6,36 +6,52 @@ $(function() {
         </div>`
     );
 
+    // when mouse hovers over app in dock, show the app name above the app icon
+    function onDockHoverListener() {
+        $('.dock-app-icon').mouseenter(function() {
+            let dockAppLabelId = $(this)[0].parentNode.children[0].getAttribute('id');
+            let dockAppId = $(this)[0].getAttribute('id');
+            $(`#${dockAppId}`).addClass("test-class");
+            $(`#${dockAppLabelId}`).addClass('dock-app-label--hover');
+          })
+          .mouseleave(function() {
+            let dockAppLabelId = $(this)[0].parentNode.children[0].getAttribute('id');
+            let dockAppId = $(this)[0].getAttribute('id');
+            $(`#${dockAppId}`).removeClass("test-class");
+            $(`#${dockAppLabelId}`).removeClass('dock-app-label--hover');
+          });
+    }
+
     // define drag/drop divs & areas using JQuery UI
+    // currently, the only draggable element into a drop region is class 'folder-div'
     function makeDroppable(el) {
         el.droppable({
+            accept: '.folder-div',
             drop: function(event, ui) {
-                $(this).addClass("highlight");
+                $(this).toggleClass("highlight");
             }
         });
     }
 
-    function makeDragable(el) {
+    function makeDraggable(el) {
         el.draggable({
             scroll: true,
             scrollSensitivity: 10,
-            containment: "#full-area",
-            cursor: "move"
+            cursor: "move",
+            revert: 'invalid'
         });
     }
 
-    addFolderGridToDesktop();
-    makeDroppable($("#drop-area"));
-
     function addFolderGridToDesktop(i, j) {
-        for(let i = 0; i < 8; i++) {
+        for(let i = 0; i < 4; i++) {
             $('#desktop').append(
                 `<div class="row text-center" id="desktop-row_${i}"></div>`
             );
-            for(let j = 0; j < 10; j++) {
+            for(let j = 0; j < 12; j++) {
                 $(`#desktop-row_${i}`).append($folderGrid(i,j).clone());
             };
         }
+        makeDroppable($(".folder-container"));
     }
 
     // Context Menu
@@ -71,10 +87,13 @@ $(function() {
 
     // initialize our application's code.
     function init() {
+        addFolderGridToDesktop();
         contextListener();
         clickListener();
         keyupListener();
         resizeListener();
+        makeDroppable($("#trash"));
+        onDockHoverListener();
     }
 
     // Helper Functions
@@ -112,9 +131,8 @@ $(function() {
 
     // listens for click events; toggles menu off if a left click
     function clickListener() {
+        // listens for a click event
         document.addEventListener("click", function(e) {
-            console.log(e.target)
-            $(e.target).focus();
             let clickeElIsLink = clickInsideElement(e, contextMenuLinkClassName);
             if (clickeElIsLink) {
                 e.preventDefault();
@@ -124,6 +142,17 @@ $(function() {
                     if (button === 1) {
                         toggleMenuOff();
                     }
+            }
+        });
+
+        // listens for double click & either creates new folder or opens an existing one
+        document.addEventListener('dblclick', (e) => {
+            let dblClickElement = $(`#${clickInsideElement(e, folderContainerClassName).getAttribute('id')}`)[0];
+            let elementContainsChild = dblClickElement.children.length == 0 ? false : true;
+            if(elementContainsChild) {
+                openExistingFolder(dblClickElement.children[0].getAttribute("data-id"))
+            } else {
+                createNewFolder(dblClickElement.getAttribute('id'))
             }
         });
     }
@@ -144,7 +173,7 @@ $(function() {
         };
     }
 
-    function checkFolderId(parentId) {
+    function getFolderId(parentId) {
         return "folder_" + $(`[id="${parentId}"]`)[0].getAttribute("props");
     }
 
@@ -152,7 +181,7 @@ $(function() {
         contextMenuAction = link.getAttribute("data-action");
         
         let folderContainerId = folderActionInContext.getAttribute("id");
-        let folderDataId = checkFolderId(folderContainerId);
+        let folderDataId = getFolderId(folderContainerId);
         console.log("Folder ID - " + folderDataId + ", Folder Container ID - " + folderContainerId + ", Folder action - " + contextMenuAction);
         
         switch(contextMenuAction) {
@@ -246,17 +275,21 @@ $(function() {
 
     function createNewFolder(folderContainerId) {
         let folderContainer = $(`[id="${folderContainerId}"]`);
+        if(folderContainer[0].children.length != 0) {
+            console.log("Folder already exists in this container.");
+            return;
+        };
         let folderDataId = folderContainer[0].getAttribute("props");
 
         if(folderDataId) {
             $(`#${folderContainerId}`).append(
                 `<div class="folder-div" id="folder_${folderDataId}" data-id="folder_${folderDataId}">
-                <a href="#"><span class="fas fa-folder fa-3x folder-icon"></span></a>
+                    <span class="fas fa-folder fa-3x folder-icon"></span>
                 </div>`
             );
         };
 
-        makeDragable($(`#folder_${folderDataId}`));
+        makeDraggable($(`#folder_${folderDataId}`));
     }
 
     function openExistingFolder(folderDataId) {

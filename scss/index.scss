@@ -3,6 +3,17 @@
 body {
     background-color: $primary-color;
     font-family: 'Open Sans', sans-serif;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                        supported by Chrome, Edge, Opera and Firefox */
+}
+
+.test-class {
+  color: $test-class !important;
 }
 
 h1 {
@@ -76,13 +87,52 @@ h1 {
   }
 
   .folder-edit {
-    color: yellow;
+    color: yellow !important;
   }
 
   .folder-open {
-    color: purple;
+    color: white;
   }
 
   .folder-label {
     font-size: 15px;
+  }
+
+  #dock {
+    height: 4em;
+    width: 80%;
+    background-color: $dock-color;
+    position: absolute;
+    bottom: 0;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .dock-app-container {
+    margin: auto;
+    position: relative;
+  }
+
+  .dock-app-label {
+    display: none;
+    color: $accent-color-light;
+    position: absolute;
+    bottom: 120%;
+    width: min-content;
+    text-align: center;
+    background-color: $accent-color-dark;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1px 4px 1px 4px;
+    border: 1px solid $accent-color-light;
+    border-radius: 5px;
+  }
+
+  #trash {
+    color: #68686854;
+  }
+
+  .dock-app-label--hover {
+    display: block;
   }
