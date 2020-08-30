@@ -29,6 +29,13 @@ $(function() {
             accept: '.folder-div',
             drop: function(event, ui) {
                 $(this).toggleClass("highlight");
+                ui.draggable.position({
+                    of: $(this),
+                    at: 'horizontal vertical',
+                    using: function(css, calc) {
+                        $(this).animate(css, 200, "linear");
+                    }
+                });
             }
         });
     }
@@ -128,7 +135,7 @@ $(function() {
         }
       
         return false;
-      }
+    }
 
     // listens for click events; toggles menu off if a left click
     function clickListener() {
@@ -174,7 +181,7 @@ $(function() {
         };
     }
 
-    function getFolderId(parentId) {
+    function createFolderId(parentId) {
         return "folder_" + $(`[id="${parentId}"]`)[0].getAttribute("props");
     }
 
@@ -182,7 +189,7 @@ $(function() {
         contextMenuAction = link.getAttribute("data-action");
         
         let folderContainerId = folderActionInContext.getAttribute("id");
-        let folderDataId = getFolderId(folderContainerId);
+        let folderDataId = createFolderId(folderContainerId);
         console.log("Folder ID - " + folderDataId + ", Folder Container ID - " + folderContainerId + ", Folder action - " + contextMenuAction);
         
         switch(contextMenuAction) {
