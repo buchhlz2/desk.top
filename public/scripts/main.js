@@ -1,4 +1,5 @@
 $(function() {
+    $('[data-toggle="popover"]').popover();
     // Folder & Desktop Setup
     // bootstrap grid where each grid can have 0 to 1 folders; current logic hardcodes all divs to have folder
     let $folderGrid = (row, index) => $(
@@ -292,7 +293,9 @@ $(function() {
         if(folderDataId) {
             $(`#${folderContainerId}`).append(
                 `<div class="folder-div" id="folder_${folderDataId}" data-id="folder_${folderDataId}">
-                    <span class="fas fa-folder fa-3x folder-icon"></span>
+                    <a href="#" title="Header" data-toggle="popover" data-placement="right" data-content="Content">
+                        <span class="fas fa-folder fa-3x folder-icon"></span>
+                    </a>
                 </div>`
             );
         };

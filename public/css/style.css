@@ -1,6 +1,6 @@
 body {
-  background-color: #455a64;
-  font-family: "Open Sans", sans-serif;
+  background-color: #455A64;
+  font-family: 'Open Sans', sans-serif;
   -webkit-touch-callout: none;
   /* iOS Safari */
   -webkit-user-select: none;
@@ -13,35 +13,29 @@ body {
   /* Internet Explorer/Edge */
   user-select: none;
   /* Non-prefixed version, currently
-                        supported by Chrome, Edge, Opera and Firefox */
-}
+                        supported by Chrome, Edge, Opera and Firefox */ }
 
 h1 {
-  color: #ffffff;
-}
+  color: #FFFFFF; }
 
 .folder-container {
   height: 5em;
   width: 100%;
   text-align: center;
-  display: table;
-}
+  display: table; }
 
 .folder-div {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
-  z-index: 1;
-}
+  z-index: 1; }
 
 #drop-area {
-  width: 100%;
-}
+  width: 100%; }
 
 .highlight {
-  background-color: #cfd8dc;
-  z-index: -1;
-}
+  background-color: #CFD8DC;
+  z-index: -1; }
 
 .context-menu {
   display: none;
@@ -51,51 +45,41 @@ h1 {
   width: 240px;
   background-color: #fff;
   border: solid 1px #dfdfdf;
-  box-shadow: 1px 1px 2px #cfcfcf;
-}
+  box-shadow: 1px 1px 2px #cfcfcf; }
 
 .context-menu--active {
-  display: block;
-}
+  display: block; }
 
 .context-menu__items {
   list-style: none;
   margin: 0;
-  padding: 0;
-}
+  padding: 0; }
 
 .context-menu__item {
   display: block;
-  margin-bottom: 4px;
-}
+  margin-bottom: 4px; }
 
 .context-menu__item:last-child {
-  margin-bottom: 0;
-}
+  margin-bottom: 0; }
 
 .context-menu__link {
   display: block;
   padding: 4px 12px;
   color: #0066aa;
-  text-decoration: none;
-}
+  text-decoration: none; }
 
 .context-menu__link:hover {
   color: #fff;
-  background-color: #0066aa;
-}
+  background-color: #0066aa; }
 
 .folder-edit {
-  color: yellow !important;
-}
+  color: yellow !important; }
 
 .folder-open {
-  color: white;
-}
+  color: white; }
 
 .folder-label {
-  font-size: 15px;
-}
+  font-size: 15px; }
 
 #dock {
   height: 4em;
@@ -104,16 +88,15 @@ h1 {
   position: absolute;
   bottom: 0;
   border-radius: 5px 5px 0 0;
-}
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }
 
 .dock-app-container {
   margin: auto;
-  position: relative;
-}
+  position: relative; }
 
 .dock-app-label {
   display: none;
-  color: #ffffff;
+  color: #FFFFFF;
   position: absolute;
   bottom: 120%;
   width: min-content;
@@ -124,28 +107,28 @@ h1 {
   margin-left: auto;
   margin-right: auto;
   padding: 1px 4px 1px 4px;
-  border: 1px solid #ffffff;
-  border-radius: 5px;
-}
+  border: 1px solid #FFFFFF;
+  border-radius: 5px; }
 
 #trash {
-  color: #68686854;
-}
+  color: #68686854; }
 
 .dock-app-label--hover {
-  display: block;
-}
+  display: block; }
 
 @keyframes expand {
   100% {
     transform: scale(1.2);
-    color: black;
-  }
-}
+    color: black; } }
 
 .dock-app-icon--hover {
   animation-name: expand;
-  animation-duration: 0.1s;
+  animation-duration: .1s;
   animation-fill-mode: forwards;
-  animation-timing-function: linear;
-}
+  animation-timing-function: linear; }
+
+.fas {
+  text-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }
+
+.navbar {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }

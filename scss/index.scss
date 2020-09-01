@@ -1,4 +1,5 @@
 @import '_colors';
+@import '_variables';
 
 body {
     background-color: $primary-color;
@@ -100,6 +101,7 @@ h1 {
     position: absolute;
     bottom: 0;
     border-radius: 5px 5px 0 0;
+    box-shadow: $shadow-default;
   }
 
   .dock-app-container {
@@ -144,4 +146,12 @@ h1 {
     animation-duration: .1s; // or in "ms"
     animation-fill-mode: forwards;
     animation-timing-function: linear;
+  }
+
+  .fas {
+    text-shadow: $shadow-default;
+  }
+
+  .navbar {
+    box-shadow: $shadow-default;
   }
